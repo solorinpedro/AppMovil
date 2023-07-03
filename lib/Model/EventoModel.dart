@@ -6,11 +6,12 @@ class EventoModel {
   String? lugar;
   int? CantidadTicket;
 
-  EventoModel(
-      {this.id,
-      this.imagen,
-      this.fecha,
-      this.nombre,
-      this.lugar,
-      this.CantidadTicket});
+  EventoModel({
+    this.id,
+    this.imagen,
+    this.fecha,
+    this.nombre,
+    this.lugar,
+    this.CantidadTicket,
+  });
 }

@@ -1,8 +1,8 @@
+import 'package:app_movil/Page/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import 'Page/home_page.dart';
 import 'Page/login_page.dart';
 
 class AuthService {

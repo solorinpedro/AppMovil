@@ -1,4 +1,5 @@
 import 'package:app_movil/Model/EventoModel.dart';
+import 'package:app_movil/Page/TicketsPage.dart';
 import 'package:app_movil/Service/EventoApi.dart';
 import 'package:app_movil/Widget/CardEvent.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,6 +31,16 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TicketsPage(),
+                ));
+          },
+          child: Icon(Icons.event),
+        ),
         title: Text('EventoApp', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.cyanAccent,
       ),

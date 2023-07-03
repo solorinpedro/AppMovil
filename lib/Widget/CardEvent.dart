@@ -20,10 +20,20 @@ class CardEvent extends StatefulWidget {
 
 class _CardEventState extends State<CardEvent> {
   final TextEditingController cantidadController = TextEditingController();
-  final TextEditingController areaController = TextEditingController();
 
   String? area;
   int? cantidad;
+  double precio = 0.0;
+
+  void calcularPrecio() {
+    if (area == 'Frente') {
+      precio = cantidad! * 150.0;
+    } else if (area == 'Backstage') {
+      precio = cantidad! * 250.0;
+    } else if (area == 'Anfiteatro') {
+      precio = cantidad! * 100.0;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +60,7 @@ class _CardEventState extends State<CardEvent> {
                       onChanged: (String? newValue) {
                         setState(() {
                           area = newValue;
+                          calcularPrecio();
                         });
                       },
                       items: [
@@ -62,13 +73,17 @@ class _CardEventState extends State<CardEvent> {
                           child: Text('Backstage'),
                         ),
                         DropdownMenuItem(
-                          value: 'anfiteatro',
-                          child: Text('anfiteatro'),
+                          value: 'Anfiteatro',
+                          child: Text('Anfiteatro'),
                         ),
                       ]),
                   SizedBox(height: 20),
                   TextFormField(
                     controller: cantidadController,
+                    onChanged: (value) {
+                      cantidad = int.tryParse(value);
+                      calcularPrecio();
+                    },
                     textAlignVertical: TextAlignVertical.center,
                     decoration: InputDecoration(
                       hintText: 'Cantidad',
@@ -93,7 +108,8 @@ class _CardEventState extends State<CardEvent> {
                   child: Text('Continuar'),
                   onPressed: () {
                     if (EventoApi.postEvento(
-                            int.parse(cantidadController.text),
+                            cantidad!,
+                            precio,
                             area!,
                             FirebaseAuth.instance.currentUser!.displayName!,
                             widget.nombre!) ==

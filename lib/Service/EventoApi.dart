@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app_movil/Model/EventoModel.dart';
+import 'package:app_movil/Model/TicketModel.dart';
 import 'package:http/http.dart' as http;
 
 class EventoApi {
@@ -23,18 +24,18 @@ class EventoApi {
     }
   }
 
-  static Future<bool> postEvento(int cantidad, String area,
+  static Future<bool> postEvento(int cantidad, double precio, String area,
       String nombreUsuario, String nombreEvento) async {
-    final url = 'http://www.myeventoapp.somee.com/tickets';
-
-    print('Cantidad${cantidad}');
-    print('Area${area}');
-    print('NombreUsuario${nombreUsuario}');
-    print('NombreEvento${nombreEvento}');
+    final url = 'http://www.myeventoapp.somee.com/Tickets/PostTicket';
+    print('Cantidad: $cantidad');
+    print('Precio: $precio');
+    print('Area: $area');
+    print('NombreUsuario: $nombreUsuario');
+    print('NombreEvento: $nombreEvento');
 
     final requestBody = {
       'cantidad': cantidad,
-      'precio': 0,
+      'precio': precio,
       'area': area,
       'nombreUsuario': nombreUsuario,
       'nombreEvento': nombreEvento
@@ -50,6 +51,27 @@ class EventoApi {
       return true;
     } else {
       return false;
+    }
+  }
+
+  static Future<List<TicketModel>> getTickets() async {
+    final response = await http
+        .get(Uri.parse('http://www.myeventoapp.somee.com/Tickets/GetTikets'));
+    print(response.body);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      final List<dynamic> ticketList = json.decode(response.body);
+      return ticketList
+          .map((json) => TicketModel(
+              id: json['id'],
+              precio: json['precio'],
+              cantidad: json['cantidad'],
+              area: json['area'],
+              nombreUsuario: json['nombreUsuario'],
+              nombreEvento: json['nombreEvento']))
+          .toList();
+    } else {
+      throw Exception('Error al obtener los datos de la API');
     }
   }
 }
